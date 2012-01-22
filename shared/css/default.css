@@ -1,0 +1,180 @@
+@font-face {
+    font-family: 'EpilogNormal';
+    src: url('epilog-webfont.eot');
+    src: url('epilog-webfont.eot?#iefix') format('embedded-opentype'),
+         url('epilog-webfont.woff') format('woff'),
+         url('epilog-webfont.ttf') format('truetype'),
+         url('epilog-webfont.svg#EpilogNormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,
+body{
+    padding:0;
+    margin:0;
+}
+
+html{
+    background-color:#00aeff;
+    height:100%;
+}
+body{
+    height:100%;
+    font-size:100%;
+    background-color:#00aeff;/* Old browsers */
+    background: -moz-linear-gradient(top, #0189f2 0%, #00aeff 39%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0189f2), color-stop(39%,#00aeff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #0189f2 0%,#00aeff 39%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #0189f2 0%,#00aeff 39%); /* Opera11.10+ */
+    background: -ms-linear-gradient(top, #0189f2 0%,#00aeff 39%); /* IE10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0189f2', endColorstr='#00aeff',GradientType=0 ); /* IE6-9 */
+    background: linear-gradient(top, #0189f2 0%,#00aeff 39%); /* W3C */
+    background-repeat:no-repeat;
+    min-height:400px;
+    min-width: 420px;
+}
+
+body,
+button,
+input,
+select,
+textarea{
+    font-family:"Helvetica","Lucida Grande","Arial", sans-serif;
+    color:#fff;
+}
+
+nav a{
+    font-family:"EpilogNormal","Helvetica","Lucida Grande","Arial", sans-serif;
+}
+
+article{
+    margin: 0 auto;
+    width:420px;
+    height:100%;
+}
+
+    h1{
+        line-height:20px;
+        font-size:14px;
+        text-align:center;
+        font-weight:normal;
+        padding-right:40px;
+    }
+
+    header{
+        padding:30% 0 20px;
+        top:7%;
+    }
+
+        header #logo{
+            display:block;
+            width:237px;
+            height:31px;
+            background: url("../img/logo-woord-wit.png") no-repeat;
+        }
+
+            #logo span{
+                display:none;
+            }
+
+        header h1{
+            display:none;
+        }
+
+        nav{
+            display:block;
+            overflow:auto;
+            padding-left:3px;
+        }
+            nav ol{
+                list-style:none;
+                margin:0;
+                padding:0;
+            }
+                nav li{
+                    float:left;
+                    padding: 0 30px 0 0;
+                }
+                nav li:last-child{
+                    padding-right:0;
+                }
+
+                    nav a,
+                    nav a:link,
+                    nav a:visited{
+                        text-decoration:none;
+                        color:#fff;
+                        font-size:30px;
+                        letter-spacing:1.2px;
+
+                        -webkit-transition: color 0.15s ease;
+                        -moz-transition: color 0.15s ease;
+                        -o-transition: color 0.15s ease;
+                        transition: color 0.15s ease;
+                    }
+                    nav a:hover,
+                    nav a:active,
+                    nav a.active,
+                    nav a.active:link,
+                    nav a.active:visited,
+                    nav a.active:hover,
+                    nav a.active:active{
+                        color:#122632;
+                    }
+
+    .tekst{
+        float:left;
+        margin-top:22px;
+            width:auto;
+            line-height:22px;
+            padding: 0 5px;
+    }
+            .content{
+                line-height:22px;
+                font-size:15px;
+            }
+                .content a,
+                .content a:link,
+                .content a:visited{
+                    color:#122632;
+                    text-decoration:none;
+                }
+                .content a:active,
+                .content a:hover{
+
+                    -webkit-transition: all 0.15s ease;
+                    -moz-transition: all 0.15s ease;
+                    -o-transition: all 0.15s ease;
+                    transition: all 0.15s ease;
+
+                    color:#fff;
+                    background-color:#122632;
+                }
+
+            .content ul,
+            .content ol{
+                padding-left:22px;
+            }
+            .content ul{
+                list-style-image:url("../img/star.png");
+            }
+
+            .tekst .foto-links{
+                float:left;
+                margin: 0 22px 11px 0;
+            }
+
+            .tekst .foto-rechts{
+                float:right;
+                margin: 0 0 11px 22px;
+            }
+
+
+
+    footer{
+        position:fixed;
+        bottom:10px;
+        right:10px;
+        font-size:11px;
+    }

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+    	<title>frankbosma.nl homepage october 26, 2011</title>
+    	<meta charset="utf-8">
+        <link rel="stylesheet" href="../../shared/css/default.css">
+        <style>
+
+            body{
+                overflow:hidden;
+            }
+
+            body.starry-night{
+                background-color:#094d81;/* Old browsers */
+                background: -moz-linear-gradient(top, #094d81 0%, #3a91d5 49%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #094d81), color-stop(49%, #3a91d5)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #094d81 0%, #3a91d5 49%); /* Chrome10+,Safari5.1+ */
+                background: -o-linear-gradient(top, #094d81 0%, #3a91d5 49%); /* Opera11.10+ */
+                background: -ms-linear-gradient(top, #094d81 0%, #3a91d5 49%); /* IE10+ */
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#094d81', endColorstr = '#3a91d5', GradientType = 0); /* IE6-9 */
+                background: linear-gradient(top, #094d81 0%, #3a91d5 49%); /* W3C */                
+            }
+
+            #home{
+                position:relative;
+                z-index:2;
+            }
+
+            canvas{
+                position:absolute;
+                z-index:1;
+                left:0;
+                top:0;
+            }
+
+        </style>
+        <!--[if IE]><script type="text/javascript" src="../../shared/js/ext/excanvas.js"></script><![endif]-->
+    </head>
+    <body>
+        <div id="home"></div>
+        <script src="../../shared/js/fb.js"></script>
+        <script>
+                        
+            //homepage appearance
+            var home = document.getElementById("home");
+            FB.ajax("../../shared/templates/home11.html", function(html) {
+                home.innerHTML = html;
+            });
+
+        </script>
+        <script src="js/ImageParticle.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
