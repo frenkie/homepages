@@ -5,7 +5,7 @@ januari 22
 [Seb Lee Delisle](sebleedelisle.com) gave an excellent presentation on creative coding at the [Fronteers 2011 conference](http://fronteers.nl/congres/2011/).
 The source code for his html5 canvas particle experiments is on [github](https://github.com/sebleedelisle/JavaScript-PixelPounding-demos) and inspired me to turn my homepage into a particle experiment based on the time of the day.
 
-The result is my homepage showing particle clouds if you visit it between 7 am and 6 pm and a particle filled starry night between 6 pm and 7 am.
+The result is [my homepage](http://frankbosma.nl/homepages/2012/0122/) showing particle clouds if you visit it between 7 am and 6 pm and a particle filled starry night between 6 pm and 7 am.
 
 
 ### IE support
