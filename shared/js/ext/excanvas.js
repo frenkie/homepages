@@ -484,6 +484,7 @@ if (!document.createElement('canvas').getContext) {
     image.runtimeStyle.height = 'auto';
 
     // get the original size
+
     var w = image.width;
     var h = image.height;
 

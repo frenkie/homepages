@@ -132,7 +132,7 @@ ImageParticle.prototype = {
 		
 		// and fade it out
         this.updateValue("alpha", this.fade, "-");
-		if(this.alpha<0){ this.alpha = 0 };
+		if(this.alpha<0){ this.alpha = 0; }
 		
 		// rotate the particle by the spin amount.
         this.updateValue("rotation", this.spin, "+");
@@ -177,7 +177,7 @@ ImageParticle.prototype = {
 		if(this.alpha ==0) return;
 		
 		// save the current canvas state
-		c.save(); 
+		c.save();
 		
 		// move to where the particle should be
 		c.translate(this.posX, this.posY);

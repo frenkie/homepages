@@ -1,7 +1,13 @@
 (function(){
     window.FB = window.FB || {};
 
+    var util = {
 
+        domLoaded : function(){
+            return document.readyState === "complete";
+        }
+
+    };
 
     /*
     Copyright (c) 2008 Stefan Lange-Hegermann
@@ -91,17 +97,28 @@
     };
 
     FB.addEvent = function(){
+
         if (document.addEventListener){
             return function(elem, event, callback){
-                return elem.addEventListener(event, callback, false);
+                if((elem === window || elem === document ) && event === "load" && util.domLoaded()) {
+                    callback();
+                }else{
+                    elem.addEventListener(event, callback, false);
+                }
             };
         }else if (document.attachEvent) { // IE DOM
             return function(elem, event, callback){
-                return elem.attachEvent("on"+event, callback);
+                if((elem === window || elem === document ) && event === "load" && util.domLoaded()){
+                    callback();
+                }else{
+                    elem.attachEvent("on"+event, callback);
+                }
             };
         }else{
             return function(){};
         }
     }();
+
+
 
 })();

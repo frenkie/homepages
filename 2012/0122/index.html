@@ -1,7 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
-    	<title>frankbosma.nl homepage october 26, 2011</title>
+    	<title>frankbosma.nl homepage januari 22, 2012</title>
     	<meta charset="utf-8">
         <link rel="stylesheet" href="../../shared/css/default.css">
         <style>
@@ -34,14 +34,17 @@
             }
 
         </style>
-        <!--[if IE]><script type="text/javascript" src="../../shared/js/ext/excanvas.js"></script><![endif]-->
+        <!--[if lt IE 9]>
+            <script src="../../shared/js/ext/flashcanvas/flashcanvas.js"></script>
+            <script src="../../shared/js/ext/html5shiv/3.0/html5shiv-printshiv.js"></script>
+        <![endif]-->
     </head>
     <body>
         <div id="home"></div>
         <script src="../../shared/js/fb.js"></script>
         <script>
                         
-            //homepage appearance
+            // homepage appearance
             var home = document.getElementById("home");
             FB.ajax("../../shared/templates/home11.html", function(html) {
                 home.innerHTML = html;

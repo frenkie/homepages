@@ -3,13 +3,37 @@ var Paths = Paths || {
 };
 
 var Shared = {
-    SCREEN_WIDTH : window.innerWidth,
-    SCREEN_HEIGHT : window.innerHeight,
-    HALF_WIDTH : window.innerWidth / 2,
-    HALF_HEIGHT : window.innerHeight / 2,
+    SCREEN_WIDTH : (function(){
+        if(window.innerWidth){
+            return window.innerWidth;
+
+        }else if(document.documentElement.clientWidth){
+            return document.documentElement.clientWidth;
+
+        }else if(document.body.clientWidth){
+            return document.body.clientWidth;
+        }
+        return 0;
+    })(),
+    SCREEN_HEIGHT : (function(){
+        if(window.innerHeight){
+            return window.innerHeight;
+
+        }else if(document.documentElement.clientHeight){
+            return document.documentElement.clientHeight;
+
+        }else if(document.body.clientHeight){
+            return document.body.clientHeight;
+        }
+        return 0;
+    })(),
+
     mouseDown : false,
 
     init : function() {
+
+        this.HALF_WIDTH = this.SCREEN_WIDTH / 2;
+        this.HALF_HEIGHT = this.SCREEN_HEIGHT / 2;
 
         this.mouseX = this.HALF_WIDTH;
         this.mouseY = this.HALF_HEIGHT;
@@ -24,25 +48,36 @@ var Shared = {
             Shared.onMouseUp.call(Shared, e)
         });
 
-        this.canvas = Shared.createCanvas();
+        this.canvas = this.createCanvas(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+
         document.body.appendChild(this.canvas);
-        this.canvas.width = Shared.SCREEN_WIDTH;
-        this.canvas.height = Shared.SCREEN_HEIGHT;
     },
 
-    createCanvas : function(){
+    createCanvas : function(width, height){
 
         var elem = document.createElement('canvas');
-        if(typeof G_vmlCanvasManager != "undefined" && !Shared.canvasSupported){
+            elem.width = width;
+            elem.height = height;
+
+        if(!(elem.getContext && elem.getContext('2d')) && typeof G_vmlCanvasManager != "undefined"){
             G_vmlCanvasManager.initElement(elem);
         }
         return elem;
     },
 
-    canvasSupported : (function(){
+    canvasSupported : function(){
+
         var elem = document.createElement('canvas');
+
+        if( !(elem.getContext && elem.getContext('2d')) && typeof G_vmlCanvasManager != "undefined"){
+            G_vmlCanvasManager.initElement(elem);
+            if(!!(elem.getContext && elem.getContext('2d'))){
+                elem = null;
+                return true;
+            }
+        }
         return !!(elem.getContext && elem.getContext('2d'));
-    })(),
+    },
 
     onMouseMove : function(event) {
         this.mouseX = event.clientX;
@@ -105,23 +140,24 @@ var StarryNight = {
         this.context = canvas.getContext('2d');
 
         this.particles = [];
-        this.fallingStarParticles = [];
+        this.shootingStarParticles = [];
 
         this.particleImage = new Image();
+        this.particleImage.onload = function(){
+            setInterval(function() {
+                StarryNight.loop.call(StarryNight);
+            }, 1000/30);
+
+            StarryNight.shootingStarLoop.call(StarryNight);
+        };
         this.particleImage.src = Paths.images +'/ParticleWhite.png';
-
-        setInterval(function() {
-            StarryNight.loop.call(StarryNight);
-        }, 1000 / 30);
-
-        this.fallingStarLoop();
     },
 
-    fallingStarLoop : function(){
+    shootingStarLoop : function(){
 
         setTimeout(function() {
-            StarryNight.createFallingStar.call(StarryNight, function(){
-                StarryNight.fallingStarLoop.call(StarryNight);
+            StarryNight.createShootingStar.call(StarryNight, function(){
+                StarryNight.shootingStarLoop.call(StarryNight);
             });
         }, Shared.randomRange(6000, 15000));
     },
@@ -136,9 +172,9 @@ var StarryNight = {
         // clear the canvas
         this.context.clearRect(0, 0, Shared.SCREEN_WIDTH, Shared.SCREEN_HEIGHT);
 
-        // iteratate through each particle
+        // iterate through each particle
         this.updateParticles(this.particles);
-        this.updateParticles(this.fallingStarParticles);
+        this.updateParticles(this.shootingStarParticles);
 
     },
 
@@ -210,9 +246,9 @@ var StarryNight = {
         }
     },
 
-    createFallingStar: function(afterCallback) {
+    createShootingStar: function(afterCallback) {
 
-        var falling = [],
+        var shooting = [],
                 duration = 650,
                 posX = Shared.randomRange(20, Shared.SCREEN_WIDTH - 20),
                 posY = Shared.randomRange(20, Shared.HALF_HEIGHT * 0.4),
@@ -262,9 +298,9 @@ var StarryNight = {
 
         star.saveAttributeStates();
 
-        falling.push(star);
+        shooting.push(star);
 
-        //create a trail of stars for the falling star
+        //create a trail of stars for the shooting star to project it's beam
         for (var a = 0; a < 25; a++) {
             var trail = new ImageParticle(this.particleImage, posX, posY);
             trail.size = 0.1;
@@ -305,35 +341,32 @@ var StarryNight = {
             trail.alpha = 0.6;
             trail.saveAttributeStates();
 
-            falling.push(trail);
+            shooting.push(trail);
         }
 
 
-        this.fallingStarParticles = falling;
+        this.shootingStarParticles = shooting;
 
         setTimeout(function(){
 
-            StarryNight.fallingStarParticles = [];
+            StarryNight.shootingStarParticles = [];
             afterCallback();
 
-        }, duration * 2);
+        }, duration * 2); //falling should be finished then, so we can cleanup
     }
 };
 
 
 var CloudyDay = {
 
-    MAX_PARTICLES: 75,
-
     init : function(canvas) {
-
+        
         var body = document.getElementsByTagName("body")[0];
         body.className = "cloudy-day";
 
         this.context = canvas.getContext('2d');
 
         this.clouds = [];
-        this.numClouds = 0;
 
         this.particleImage = new Image();
         this.particleImage.src = Paths.images +'/ParticleWhite3.png';
@@ -353,6 +386,7 @@ var CloudyDay = {
 
         // clear the canvas
         this.context.clearRect(0, 0, Shared.SCREEN_WIDTH, Shared.SCREEN_HEIGHT);
+        var shiftClouds = false;
 
         for (var i = 0; i < this.clouds.length; i++) {
 
@@ -361,16 +395,17 @@ var CloudyDay = {
             cloud.update();
 
             if (cloud.finished()) {
-                this.clouds.shift();
+                shiftClouds = true;
             }
+        }
+        if(shiftClouds){
+            this.clouds.shift();//
         }
     },
 
     makeCloud: function() {
-        this.numClouds++;
 
         var cloud = new Cloud({
-            name:  this.numClouds,
             particleImage : this.particleImage,
             context: this.context,
             posY:  Shared.randomRange(40, Shared.SCREEN_HEIGHT - 40)
@@ -385,66 +420,12 @@ var CloudyDay = {
         (function(that) {
             setTimeout(function() {
                 if (that.clouds.length == 1) {
-                    CloudyDay.makeCloud.call(CloudyDay);
+                    that.makeCloud.call(that);
                 } else {
                     that.scheduleCloud.call(that);
                 }
             }, Shared.randomRange(20000, 30000));
         })(this);
-    },
-
-    makeParticle: function(particleCount) {
-
-        for (var i = 0; i < particleCount; i++) {
-
-            var particle = new ImageParticle(this.particleImage,
-                    Shared.randomRange(0, Shared.SCREEN_WIDTH),
-                    Shared.randomRange(0, Shared.HALF_HEIGHT));
-
-            particle.size = Shared.randomRange(0.05, 0.1);
-            particle.alpha = Shared.randomRange(0.6, 0.95);
-
-            //smooth flicker fade in out in out in out ...
-            var flickerSpeed = Shared.randomRange(70, 80);
-            particle.fade = (function(theParticle, theFlicker) {
-                return function() {
-
-                    var startValues = theParticle.getSavedAttributeStates();
-                    var age = theParticle.age / theFlicker;
-
-                    return startValues.alpha - Math.cos(age) * 0.5 * (startValues.alpha / 2);
-                };
-            })(particle, flickerSpeed);
-
-
-            //nice bouncing out of the sky
-            particle.velY = (function(theParticle, posY) {
-
-                //minimum of 400 milliseconds plus percentage of distance
-                var duration = (posY / Shared.HALF_HEIGHT) * 1400 + 400;
-
-                return function() {
-
-                    var startValues = theParticle.getSavedAttributeStates();
-                    var age = theParticle.age;
-
-                    return Shared.easing.Elastic.easeOut(age,
-                            startValues.posY,
-                            posY - startValues.posY,
-                            duration,
-                            0.2);
-                };
-            })(particle, particle.posY);
-
-            particle.posY = -20; //position outside top of screen
-
-
-            // save the attribute values at the start so we can use them in update functions
-            particle.saveAttributeStates();
-
-            // add particle to the array
-            this.particles.push(particle);
-        }
     }
 };
 
@@ -452,13 +433,12 @@ function Cloud(cfg) {
     this.particleImage = cfg.particleImage;
     this.context = cfg.context;
     this.posY = cfg.posY;
-    this.name = cfg.name;
 
     this.particles = [];
 
     this.generateDuration = Math.PI * 1000;
 
-    this.maxRangeY = Shared.randomRange(10, 75);
+    this.maxRangeY = Shared.randomRange(25, 75);
 
     this.age = 0;
     this.born = 0;
@@ -486,28 +466,34 @@ Cloud.prototype = {
 
         if (this.age < this.generateDuration) {
 
-            var rangeY = Shared.randomRange(1, this.maxRangeY),
-                    numParticles = Math.ceil(rangeY / 50);
-            if (numParticles == 0) {
-                numParticles = 1;
-            }
-
-            var posX = 0,
-                    pl = this.particles.length;
-            if (pl) {
-                var last = this.particles[pl - 1];
-                posX = last.posX - last.velX * Shared.randomRange(1.3, 3.5);
-            } else {
-                posX = -1;
-            }
-
-            for (var a = 0; a < numParticles; a++) {
-
-                this.createParticle(posX, this.posY + Shared.randomRange(1, rangeY + Shared.randomRange(1, 10)));
-                this.createParticle(posX, this.posY - Shared.randomRange(1, rangeY + Shared.randomRange(1, 10)));
-            }
+            this.generate();
         }
         this.updateParticles();
+    },
+
+    generate: function(){
+        var rangeY = Shared.randomRange(1, this.maxRangeY),
+            numParticles = Math.ceil(rangeY / 50);
+
+        var posX,
+            pl = this.particles.length;
+        if (pl) {
+            var last = this.particles[pl - 1];
+            posX = last.posX - last.velX * Shared.randomRange(1.3, 3.5);
+        } else {
+            posX = -1;
+        }
+
+        while(numParticles !== 0){
+
+            //top half of the sine wave
+            this.createParticle(posX, this.posY + Shared.randomRange(1, rangeY + Shared.randomRange(1, 10)));
+
+            //bottom half of the sine wave
+            this.createParticle(posX, this.posY - Shared.randomRange(1, rangeY + Shared.randomRange(1, 10)));
+
+            numParticles--;
+        }
     },
 
     createParticle: function(posX, posY) {
@@ -539,7 +525,7 @@ Cloud.prototype = {
 
         var pl = this.particles.length;
         if (pl) {
-            return this.particles[pl - 1].posX > Shared.SCREEN_WIDTH + 30;
+            return this.particles[pl - 1].posX > (Shared.SCREEN_WIDTH + 30);
         } else {
             return false;
         }
@@ -547,18 +533,17 @@ Cloud.prototype = {
 };
 
 
-if ( Shared.canvasSupported ){
+FB.addEvent(window, "load", function() {
 
-    FB.addEvent(window, "load", function() {
-
+    if ( Shared.canvasSupported() ){
         var now = new Date();
 
         Shared.init();
 
         if (now.getHours() >= 18 || now.getHours() < 7) {
-            StarryNight.init(Shared.canvas);
+           StarryNight.init(Shared.canvas);
         } else {
-            CloudyDay.init(Shared.canvas);
+           CloudyDay.init(Shared.canvas);
         }
-    });
-}
+    }
+});
