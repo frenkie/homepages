@@ -17,10 +17,12 @@ I also tried it with [ExplorerCanvas](http://code.google.com/p/explorercanvas/) 
 Take a look at <code>js/main.js</code> to see what's going on. Based on the time of day <code>CloudyDay</code> or <code>StarryNight</code> is initialised with a reference to a canvas element.
 
 **ImageParticle.js**
+
 Both particle systems use Seb Lee Delisle's <code>js/ImageParticle.js</code> class and a white partially transparent image. The class basically provides an easy way to render an Image on the canvas through an update and render function of an ImageParticle instance. You can set various attributes on the instance like positioning and x and y velocity. The latter wil change the current x and y position of a particle each time you call update() so you can animate it. Same thing can be done with transparency and rotation.
 
 
 **Modifications**
+
 I modified the ImageParticle class to keep track of a particle's age and to accept functions for updating particle attributes. In combination with a particle's age and Robert Penner's world famous [easing functions](http://www.robertpenner.com/easing/) those attribute functions give you sweet property animations. Another addition I made is a way to save and retreive an ImageParticle's state. The easing functions for example need the start values of a particle's attributes.
 
 #### Starry Night
@@ -28,7 +30,7 @@ Starry Night is a clear example of the mentioned easing functions when you see t
 
 The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Cosine_wave) and the particle's age. Would have made for an interesting math class back in my high school years if we got (co)sine and pi explained this way.
 
-![shooting star](img/readme-shooting-star.jpg)
+![shooting star](http://frankbosma.nl/homepages/2012/0122/img/readme-shooting-star.jpg)
 An occasional shooting star can be seen which consists of 26 image particles following the same path a small time distance apart. One leading star and 25 trailing stars.
 
 
@@ -39,12 +41,12 @@ Cloudy Day is a particle systems that creates random particle clouds. No more th
 Creating a realistic enough [cumulus cloud](http://en.wikipedia.org/wiki/Cumulus_cloud) has been a fun experiment. I'm still not completely satisfied so if you know of a better/another way, please let me know in the comments!
 
 **sine waves**
-![A cloud based on two sine wave halfs](img/readme-sine-cloud.jpg)
+
+![A cloud based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-cloud.jpg)
 
 At first I thought the easiest mathematical way was seeing a cumulus cloud as the shape of two sine wave halfs glued together and filled with cloud particles, plus some randomness. Half a sine wave is <code>Math.PI</code> seconds so floating the clouds in from the left side of the screen means I would only have to generate particles for <code>Math.PI</code> seconds adding them to the cloud, vertical slice by slice.
 
-<code>
-
+```javascript
     //generates a vertical slice of particles, called for 3.14 seconds, 30 times per second
     generate: function(){
         var rangeY = Math.sin(this.age / 1000),   //this.age is the age of a cloud in milliseconds
@@ -88,23 +90,21 @@ At first I thought the easiest mathematical way was seeing a cumulus cloud as th
 
         this.particles.push(particle);
     }
-    
-</code>
+```
 
 In the end that made all clouds look like sine waves shapes even when adding randomness.
 
-![Clouds based on two sine wave halfs](img/readme-sine-cloud.jpg)
+![Clouds based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-cloud.jpg)
 
 So i ditched the realistic look and followed Seb's advice to add more randomness and simple equations instead of trying to be too realistic.
 
 **random**
 
-![Clouds based on a lot of randomness](img/readme-random-clouds.jpg)
+![Clouds based on a lot of randomness](http://frankbosma.nl/homepages/2012/0122/img/readme-random-clouds.jpg)
 
 As you can see there is a lot of diversity in the clouds.
 
-<code>
-
+```javascript
     generate: function(){
         var rangeY = Shared.randomRange(1, this.maxRangeY), //rangeY isn't based on Math.sin anymore
             numParticles = Math.ceil(rangeY / 50); //we now just use a random number of particles
@@ -133,9 +133,7 @@ As you can see there is a lot of diversity in the clouds.
             numParticles--;
         }
     }
-
-</code>
-
+```
 
 ### to infinity and beyond
 Well that about sums it up. I hope these experiments got you interested in experimenting with canvas and/or particles. Be sure to check out Seb Lee Delisle's mentioned [particle experiments](https://github.com/sebleedelisle/JavaScript-PixelPounding-demos) for more creativity or check out my code from github and start fooling around! His or my slightly modified ImageParticle.js is a good start. Enjoy! Show me your experiments in the comments and oh, do let me know if you discover a good way to draw clouds :)
