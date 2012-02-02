@@ -28,9 +28,28 @@ I modified the ImageParticle class to keep track of a particle's age and to acce
 #### Starry Night
 Starry Night is a clear example of the mentioned easing functions when you see the stars dropping from te sky with a bounce.
 
-The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Cosine_wave) and the particle's age. Would have made for an interesting math class back in my high school years if we got (co)sine and pi explained this way.
+The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Cosine_wave) and the particle's age.
+
+```javascript
+    var flickerSpeed = Shared.randomRange(70, 80);
+    particle.fade = (function(theParticle, theFlicker) {
+
+        var startAlpha = theParticle.getSavedAttributeStates().alpha;
+
+        return function() {
+
+            var age = theParticle.age / theFlicker; //don't age too fast
+
+            return startAlpha - Math.cos(age) * 0.5 * (startAlpha / 2.5);
+                    //lower the alpha value with between 0 and 0.5 of a quarter of it's start value
+        };
+    })(particle, flickerSpeed);
+```
+
+Would have made for an interesting math class back in my high school years if we got (co)sine and pi explained this way.
 
 ![shooting star](http://frankbosma.nl/homepages/2012/0122/img/readme-shooting-star.jpg)
+
 An occasional shooting star can be seen which consists of 26 image particles following the same path a small time distance apart. One leading star and 25 trailing stars.
 
 
@@ -94,7 +113,7 @@ At first I thought the easiest mathematical way was seeing a cumulus cloud as th
 
 In the end that made all clouds look like sine waves shapes even when adding randomness.
 
-![Clouds based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-cloud.jpg)
+![Clouds based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-clouds  .jpg)
 
 So i ditched the realistic look and followed Seb's advice to add more randomness and simple equations instead of trying to be too realistic.
 

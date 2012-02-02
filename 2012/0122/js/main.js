@@ -203,15 +203,20 @@ var StarryNight = {
             particle.size = Shared.randomRange(0.05, 0.1);
             particle.alpha = Shared.randomRange(0.6, 0.95);
 
+            // save the attribute values at the start so we can use them in update functions
+            particle.saveAttributeStates();
+
             //smooth flicker fade in out in out in out ...
             var flickerSpeed = Shared.randomRange(70, 80);
             particle.fade = (function(theParticle, theFlicker) {
+
+                var startAlpha = theParticle.getSavedAttributeStates().alpha;
+
                 return function() {
 
-                    var startValues = theParticle.getSavedAttributeStates();
-                    var age = theParticle.age / theFlicker;
+                    var age = theParticle.age / theFlicker; //don't age too fast
 
-                    return startValues.alpha - Math.cos(age) * 0.5 * (startValues.alpha / 2.5);
+                    return startAlpha - Math.cos(age) * 0.5 * (startAlpha / 2.5);
                 };
             })(particle, flickerSpeed);
 
@@ -237,8 +242,7 @@ var StarryNight = {
 
             particle.posY = -20; //position outside top of screen
 
-
-            // save the attribute values at the start so we can use them in update functions
+            // save the attribute values again now that we changed posY
             particle.saveAttributeStates();
 
             // add particle to the array
