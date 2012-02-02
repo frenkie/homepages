@@ -113,7 +113,7 @@ At first I thought the easiest mathematical way was seeing a cumulus cloud as th
 
 In the end that made all clouds look like sine waves shapes even when adding randomness.
 
-![Clouds based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-clouds  .jpg)
+![Clouds based on two sine wave halfs](http://frankbosma.nl/homepages/2012/0122/img/readme-sine-clouds.jpg)
 
 So i ditched the realistic look and followed Seb's advice to add more randomness and simple equations instead of trying to be too realistic.
 
