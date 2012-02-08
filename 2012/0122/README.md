@@ -37,14 +37,14 @@ The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Co
     particle.fade = (function(theParticle, theFlicker) {
 
         var startAlpha = theParticle.getSavedAttributeStates().alpha;
-        var fortypcAlpha = startAlpha / 2.5;
+        var twentypcAlpha = startAlpha * 0.2;
 
         return function() {
 
             var age = theParticle.age / theFlicker; //don't age too fast
 
-            return startAlpha - Math.cos(age) * 0.5 * fortypcAlpha;
-                    //lower the alpha value with between 0 and 0.5 of a quarter of it's start value
+            return startAlpha - Math.cos(age) * twentypcAlpha;
+                    //lower the alpha value with between 0 and 20% of it's start value
         };
     })(particle, flickerSpeed);
 ```
