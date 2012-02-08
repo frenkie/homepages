@@ -7,6 +7,8 @@ The source code for his html5 canvas particle experiments is on [github](https:/
 
 The result is [my homepage](http://frankbosma.nl/homepages/2012/0122/) showing particle clouds if you visit it between 7 am and 6 pm and a particle filled starry night between 6 pm and 7 am.
 
+![Screenshot of the result](http://frankbosma.nl/homepages/2012/0122/img/readme-screenshot.jpg)
+
 
 ### IE support
 Support for IE is added through [Flashcanvas](http://flashcanvas.net/) which has excellent documentation on how to implement it and what it supports. I use the non pro version.
@@ -35,12 +37,13 @@ The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Co
     particle.fade = (function(theParticle, theFlicker) {
 
         var startAlpha = theParticle.getSavedAttributeStates().alpha;
+        var quarterAlpha = startAlpha / 2.5;
 
         return function() {
 
             var age = theParticle.age / theFlicker; //don't age too fast
 
-            return startAlpha - Math.cos(age) * 0.5 * (startAlpha / 2.5);
+            return startAlpha - Math.cos(age) * 0.5 * quarterAlpha;
                     //lower the alpha value with between 0 and 0.5 of a quarter of it's start value
         };
     })(particle, flickerSpeed);
