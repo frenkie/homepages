@@ -211,13 +211,13 @@ var StarryNight = {
             particle.fade = (function(theParticle, theFlicker) {
 
                 var startAlpha = theParticle.getSavedAttributeStates().alpha;
-                var quarterAlpha = startAlpha / 2.5;
+                var fortypcAlpha = startAlpha / 2.5;
 
                 return function() {
 
                     var age = theParticle.age / theFlicker; //don't age too fast
 
-                    return startAlpha - Math.cos(age) * 0.5 * quarterAlpha;
+                    return startAlpha - Math.cos(age) * 0.5 * fortypcAlpha;
                 };
             })(particle, flickerSpeed);
 

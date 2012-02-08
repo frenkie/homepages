@@ -12,7 +12,7 @@ The result is [my homepage](http://frankbosma.nl/homepages/2012/0122/) showing p
 
 ### IE support
 Support for IE is added through [Flashcanvas](http://flashcanvas.net/) which has excellent documentation on how to implement it and what it supports. I use the non pro version.
-I also tried it with [ExplorerCanvas](http://code.google.com/p/explorercanvas/) but that didn't work out with mage particles in combination with scaling, alpha channels and about a 125 of them :). Because Flashcanvas worked out of the box I decided to stick with that.
+I also tried it with [ExplorerCanvas](http://code.google.com/p/explorercanvas/) but that didn't work out with image particles in combination with scaling, alpha channels and about a 125 of them :). Because Flashcanvas worked out of the box I decided to stick with that.
 
 
 ### Code
@@ -37,13 +37,13 @@ The alpha flickering is based on a [cosine wave](http://en.wikipedia.org/wiki/Co
     particle.fade = (function(theParticle, theFlicker) {
 
         var startAlpha = theParticle.getSavedAttributeStates().alpha;
-        var quarterAlpha = startAlpha / 2.5;
+        var fortypcAlpha = startAlpha / 2.5;
 
         return function() {
 
             var age = theParticle.age / theFlicker; //don't age too fast
 
-            return startAlpha - Math.cos(age) * 0.5 * quarterAlpha;
+            return startAlpha - Math.cos(age) * 0.5 * fortypcAlpha;
                     //lower the alpha value with between 0 and 0.5 of a quarter of it's start value
         };
     })(particle, flickerSpeed);
